@@ -3,12 +3,13 @@ import prisma from "@/utils/db";
 import bcrypt from "bcryptjs";
 import { sendEmail } from "@/utils/sendEmail";
 import { forgotPasswordSchema } from "@/utils/validationSchemas";
+import {APP_NAME} from '@/utils/constants';
 
-const APP_NAME = process.env.APP_NAME || "Depression Diagnoser";
+
 
 /**
  *  @method  POST
- *  @route   ~/api/users/forgot-password
+ *  @route   ~/api/users/forgot
  *  @desc    Forgot Password - Reset and send new password via email
  *  @access  public
  */

@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 /**
  *  @method  GET
@@ -8,13 +8,13 @@ import { cookies } from 'next/headers';
  *  @access  public
  */
 export function GET(request) {
-    try {
-        cookies().delete("jwtToken");
-        return NextResponse.json({ message: 'logout' }, { status: 200 });
-    } catch (error) {
-        return NextResponse.json(
-            { message: 'internal server error' },
-            { status: 500 }
-        )
-    }
+  try {
+    cookies().delete("jwtToken");
+    return NextResponse.json({ message: "logout" }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "internal server error" },
+      { status: 500 }
+    );
+  }
 }
