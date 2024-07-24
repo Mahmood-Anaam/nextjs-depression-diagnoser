@@ -66,7 +66,7 @@ export async function GET(request, { params }) {
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      
+
       select: {
         id: true,
         email: true,
@@ -77,7 +77,6 @@ export async function GET(request, { params }) {
             avatar: true,
           },
         },
-        
       },
     });
     return NextResponse.json({ user }, { status: 200 });
@@ -145,21 +144,20 @@ export async function PUT(request, { params }) {
     }
 
     const updatedUser = await prisma.user.update({
-        where: { id: userId },
-        data: updateData,
-        select: {
-          id: true,
-          email: true,
-          username: true,
-          role: true,
-          profile: {
-            select: {
-              avatar: true,
-            },
+      where: { id: userId },
+      data: updateData,
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        role: true,
+        profile: {
+          select: {
+            avatar: true,
           },
-          
         },
-      });
+      },
+    });
 
     return NextResponse.json(
       { message: "Profile updated successfully", user: updatedUser },

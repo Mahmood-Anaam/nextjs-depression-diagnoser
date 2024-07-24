@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/utils/db';
-import bcrypt from 'bcryptjs';
-import { sendEmail } from '@/utils/sendEmail';
-import { forgotPasswordSchema } from '@/utils/validationSchemas';
+import { NextResponse } from "next/server";
+import prisma from "@/utils/db";
+import bcrypt from "bcryptjs";
+import { sendEmail } from "@/utils/sendEmail";
+import { forgotPasswordSchema } from "@/utils/validationSchemas";
 
-const APP_NAME = process.env.APP_NAME || 'Depression Diagnoser';
+const APP_NAME = process.env.APP_NAME || "Depression Diagnoser";
 
 /**
  *  @method  POST
@@ -32,7 +32,10 @@ export async function POST(request) {
     });
 
     if (!user) {
-      return NextResponse.json({ message: 'User with this email does not exist' }, { status: 404 });
+      return NextResponse.json(
+        { message: "User with this email does not exist" },
+        { status: 404 }
+      );
     }
 
     // Generate a random password
@@ -57,10 +60,16 @@ export async function POST(request) {
       <p>Thank you for using ${APP_NAME}!</p>
     `;
 
-    await sendEmail(email, 'Password Reset - Your New Password', emailContent);
+    await sendEmail(email, "Password Reset - Your New Password", emailContent);
 
-    return NextResponse.json({ message: 'New password has been sent to your email' }, { status: 200 });
+    return NextResponse.json(
+      { message: "New password has been sent to your email" },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { message: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
