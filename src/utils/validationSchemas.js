@@ -23,8 +23,8 @@ export const loginSchema = z.object({
     .max(50, { message: "Password must be at most 50 characters long" }),
 });
 
-// Update Forgot-Password Schema
-export const forgotPasswordSchema = z.object({
+// Update reset-Schema Schema
+export const resetSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
 });
 

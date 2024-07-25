@@ -2,14 +2,14 @@ import { NextResponse } from "next/server";
 import prisma from "@/utils/db";
 import bcrypt from "bcryptjs";
 import { sendEmail } from "@/utils/sendEmail";
-import { forgotPasswordSchema } from "@/utils/validationSchemas";
+import {resetSchema } from "@/utils/validationSchemas";
 import {APP_NAME} from '@/utils/constants';
 
 
 
 /**
  *  @method  POST
- *  @route   ~/api/users/forgot
+ *  @route   ~/api/users/reset
  *  @desc    Forgot Password - Reset and send new password via email
  *  @access  public
  */
@@ -17,7 +17,7 @@ export async function POST(request) {
   try {
     const body = await request.json();
 
-    const validationResult = forgotPasswordSchema.safeParse(body);
+    const validationResult = resetSchema.safeParse(body);
 
     if (!validationResult.success) {
       return NextResponse.json(
