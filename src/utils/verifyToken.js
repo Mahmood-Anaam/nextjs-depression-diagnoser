@@ -28,3 +28,5 @@ export function verifyTokenForPage(token) {
     return null;
   }
 }
+
+

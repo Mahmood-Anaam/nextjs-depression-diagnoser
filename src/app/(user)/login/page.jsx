@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Grid, Box, Card, Stack, Typography } from "@mui/material";
-import Logo from "@/components/Logo";
+import Logo from "@/components/layout/shared/logo/Logo";
 import AuthLogin from "./AuthLogin";
 import {APP_NAME} from '@/utils/constants';
 

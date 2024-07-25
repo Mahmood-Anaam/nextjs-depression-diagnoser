@@ -15,7 +15,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { DOMAIN } from "@/utils/constants";
 
-import SnackBar from "@/components/Snackbar";
+import SnackBar from "@/components/layout/shared/snackbar/SnackBar";
 
 
 

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Box, Typography, TextField, Button, Stack,CircularProgress } from "@mui/material";
-import SnackBar from "@/components/Snackbar";
+import SnackBar from "@/components/layout/shared/snackbar/SnackBar";
 import { DOMAIN } from "@/utils/constants";
 import axios from "axios";
 

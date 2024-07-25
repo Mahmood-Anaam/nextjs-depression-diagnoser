@@ -16,7 +16,7 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { DOMAIN } from "@/utils/constants";
-import SnackBar from "@/components/Snackbar";
+import SnackBar from "@/components/layout/shared/snackbar/SnackBar";
 
 const AuthLogin = ({ title, subtitle, subtext }) => {
   const router = useRouter();
