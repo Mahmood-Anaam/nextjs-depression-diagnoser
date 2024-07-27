@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { IconMoodSmile } from "@tabler/icons-react";
 import VideoCapture  from "@/components/videoCapture/VideoCapture";
 
-export default function Component() {
+export default function HomePage() {
 
   const [open, setOpen] = useState(false);
 
