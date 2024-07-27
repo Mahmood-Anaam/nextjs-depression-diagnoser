@@ -121,11 +121,11 @@ const ProfileClient = ({ user }) => {
             {loading ? <CircularProgress size={24} /> : 'Save'}
           </Button>
         ) : (
-          <Button variant="contained" color="secondary" onClick={handleEdit} startIcon={<IconEdit />}>
+          <Button variant="contained" color="secondary" disabled  startIcon={<IconEdit />}>
             Edit
           </Button>
         )}
-        <Button variant="contained" color="error" onClick={handleDelete} startIcon={<IconTrash />}>
+        <Button variant="contained" color="error" disabled startIcon={<IconTrash />}>
           Delete Account
         </Button>
       </Box>

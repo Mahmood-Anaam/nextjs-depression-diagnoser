@@ -179,7 +179,7 @@ const VideoCapture = ({
         onFrameCapture(frame);
       }
     };
-    setInterval(captureFrame, 100);
+    setInterval(captureFrame, 10);
   };
 
   const handleClose = () => {
