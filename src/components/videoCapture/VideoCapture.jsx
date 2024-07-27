@@ -33,7 +33,7 @@ const VideoCapture = ({
   const canvasRef = React.useRef();
 
   React.useEffect(() => {
-    async function getCameras() {
+    const getCameras = async () => {
       try {
         const devices = await navigator.mediaDevices.enumerateDevices();
         const videoDevices = devices.filter(
@@ -43,24 +43,24 @@ const VideoCapture = ({
       } catch (error) {
         console.error("Error accessing media devices.", error);
       }
-    }
+    };
     if (allowCamera) {
       getCameras();
     }
   }, [allowCamera]);
 
   React.useEffect(() => {
-    async function loadModels() {
+    const loadModels = async () => {
       const MODEL_URL = '/models';
       await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
       await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
-    }
+    };
     loadModels();
   }, []);
 
   React.useEffect(() => {
-    if (inputSource && cameras.some((cam) => cam.deviceId === inputSource)) {
-      async function startCamera() {
+    const startCamera = async () => {
+      if (inputSource && cameras.some((cam) => cam.deviceId === inputSource)) {
         try {
           const stream = await navigator.mediaDevices.getUserMedia({
             video: { deviceId: inputSource, width: size.width, height: size.height },
@@ -72,17 +72,17 @@ const VideoCapture = ({
         } catch (error) {
           console.error("Error accessing the camera.", error);
         }
+      } else {
+        if (stream) {
+          stream.getTracks().forEach((track) => track.stop());
+          setStream(null);
+        }
+        if (videoRef.current) {
+          videoRef.current.srcObject = null;
+        }
       }
-      startCamera();
-    } else {
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-        setStream(null);
-      }
-      if (videoRef.current) {
-        videoRef.current.srcObject = null;
-      }
-    }
+    };
+    startCamera();
   }, [inputSource, cameras, size]);
 
   const handleInputChange = (event) => {
@@ -98,10 +98,7 @@ const VideoCapture = ({
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
     selectedFiles.forEach((file) => {
-      const existingFileIndex = files.findIndex(
-        (f) => f.name === file.name && f.lastModified === file.lastModified
-      );
-      if (existingFileIndex === -1) {
+      if (!files.some(f => f.name === file.name && f.lastModified === file.lastModified)) {
         setFiles((prevFiles) => [...prevFiles, file]);
       }
     });
@@ -150,19 +147,19 @@ const VideoCapture = ({
     const captureFrame = async () => {
       if (video.paused || video.ended) return;
 
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+      canvas.width = size.width;
+      canvas.height = size.height;
 
       context.clearRect(0, 0, canvas.width, canvas.height);
       const detections = await faceapi.detectAllFaces(video).withFaceExpressions();
 
       faceapi.matchDimensions(canvas, {
-        width: video.videoWidth,
-        height: video.videoHeight,
+        width: size.width,
+        height: size.height,
       });
       const resizedDetections = faceapi.resizeResults(detections, {
-        width: video.videoWidth,
-        height: video.videoHeight,
+        width: size.width,
+        height: size.height,
       });
 
       context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before drawing
@@ -181,11 +178,8 @@ const VideoCapture = ({
         const frame = canvas.toDataURL("image/jpeg");
         onFrameCapture(frame);
       }
-
-      
     };
-    setInterval(captureFrame,5);
-   
+    setInterval(captureFrame, 100);
   };
 
   const handleClose = () => {
@@ -208,7 +202,7 @@ const VideoCapture = ({
           controls
           playsInline
           width={size.width}
-        height={size.height}
+          height={size.height}
           src={URL.createObjectURL(fileInput)}
           ref={videoRef}
           onLoadedData={handleVideoLoaded}
@@ -223,8 +217,8 @@ const VideoCapture = ({
             controls
             autoPlay
             playsInline
-            width={"100%"}
-            height={"100%"}
+            width={size.width}
+            height={size.height}
             onLoadedData={handleVideoLoaded}
             style={{ position: "absolute", top: 0, left: 0 }}
           />
@@ -278,9 +272,9 @@ const VideoCapture = ({
               </MenuItem>
             ))}
           {files.map((file, index) => (
-            <MenuItem key={index} value={file.name}>
+              <MenuItem key={index} value={file.name}>
               {file.name}
-            </MenuItem>
+              </MenuItem>
           ))}
           {allowFileUpload && (
             <MenuItem value="file">Choose a video file...</MenuItem>
@@ -302,17 +296,15 @@ const VideoCapture = ({
   return (
     <>
       {showInDialog ? (
-        <>
-          <Dialog open={open} maxWidth="md" scroll="body">
-            <DialogTitle>Video Capture Component</DialogTitle>
-            <DialogContent>{content}</DialogContent>
-            <DialogActions spacing={true}>
-              <Button onClick={handleClose} color="primary">
-                Close
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </>
+        <Dialog open={open} maxWidth="md" scroll="body" fullWidth>
+          <DialogTitle>Video Capture Component</DialogTitle>
+          <DialogContent>{content}</DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
       ) : (
         content
       )}
