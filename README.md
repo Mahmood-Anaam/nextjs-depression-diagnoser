@@ -11,11 +11,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
       SMTP_PORT=587
       SMTP_USER="email"
       SMTP_PASS="pass"
-```
+    ```
 
-
-2. run the development server:
-
+2. Run the development server:
+   
 ```bash {"id":"01J3GNS1W1W1QS8M8PEYBTPQ8D"}
 npm run dev
 # or
