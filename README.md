@@ -2,7 +2,19 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+1. Create a `.env` file in the root directory:
+    ```env
+      DATABASE_URL=DATABASE_URL
+      JWT_SECRET= JWT_SECRET
+      NODE_ENV= development || production
+      SMTP_HOST=smtp.gmail.com
+      SMTP_PORT=587
+      SMTP_USER="email"
+      SMTP_PASS="pass"
+```
+
+
+2. run the development server:
 
 ```bash {"id":"01J3GNS1W1W1QS8M8PEYBTPQ8D"}
 npm run dev
