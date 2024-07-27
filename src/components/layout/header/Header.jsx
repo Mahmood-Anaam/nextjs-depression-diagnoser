@@ -89,7 +89,7 @@ const Header = ({userPayload}) => {
       </Toolbar>
     </StyledAppBar>
     <div style={{marginLeft: isMobile ? 0 : drawerOpen ? `${drawerWidth}px` : 0,}}>
-    <Drawer userRole={userPayload.role} open={drawerOpen} handleDrawerToggle={handleDrawerToggle} />
+    <Drawer userRole={userPayload?.role} open={drawerOpen} handleDrawerToggle={handleDrawerToggle} />
     
     </div>
     </>
