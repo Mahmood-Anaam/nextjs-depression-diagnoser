@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import * as faceapi from '@vladmandic/face-api';
+import * as faceapi from 'face-api.js';
 import {
   Box,
   TextField,

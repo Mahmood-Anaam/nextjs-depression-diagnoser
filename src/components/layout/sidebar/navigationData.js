@@ -33,14 +33,14 @@ const navigationData = [
     title: "Users",
     role:'ADMIN',
     icon: IconDatabase,
-    href: "/admin",
+    href: "/admin/users",
   },
   {
     id: uniqueId(),
     title: "Admins",
     role:'ADMIN',
     icon: IconDatabase,
-    href: "/admin",
+    href: "/admin/admins",
   },
 
   {
@@ -48,7 +48,7 @@ const navigationData = [
     title: "Doctors",
     role:'ADMIN',
     icon: IconDatabase,
-    href: "/admin",
+    href: "/admin/doctors",
   },
 
 
@@ -60,7 +60,7 @@ const navigationData = [
     id: uniqueId(),
     title: "My Acount",
     icon: IconMail,
-    href: "/pro",
+    href: "/profile",
   },
 ];
 
