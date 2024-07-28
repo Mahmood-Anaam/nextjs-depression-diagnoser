@@ -35,6 +35,7 @@ const VideoCapture = ({
   React.useEffect(() => {
     const getCameras = async () => {
       try {
+        await navigator.mediaDevices.getUserMedia({ video: true });
         const devices = await navigator.mediaDevices.enumerateDevices();
         const videoDevices = devices.filter(
           (device) => device.kind === "videoinput"
