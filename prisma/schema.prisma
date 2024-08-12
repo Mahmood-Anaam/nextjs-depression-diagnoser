@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN      // Full access to all resources and functionalities
+  USER       // Basic access to the application
+  MODERATOR  // Can manage content or moderate user interactions
+  GUEST      // Limited access, often read-only or minimal interaction
+}
+
+model User {
+  id        Int         @id @default(autoincrement())
+  email     String      @unique
+  username  String      @db.VarChar(100)
+  password  String
+  role      Role        
+  avatar    String?     // Stores image data as a base64 encoded string
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  diagnoses Diagnosis[] // One-to-many relationship with Diagnosis
+}
+
+enum DiagnosisStatus {
+  NO_DEPRESSION         // No signs of depression
+  MILD_DEPRESSION       // Mildly depressed
+  MODERATE_DEPRESSION   // Moderately depressed
+  SEVERE_DEPRESSION     // Severely depressed
+}
+
+model Diagnosis {
+  id        Int             @id @default(autoincrement())
+  status    DiagnosisStatus
+  userId    Int
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
