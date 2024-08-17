@@ -1,58 +1,44 @@
-"use client"; 
+"use client";
+import "regenerator-runtime/runtime";
+import React, { useState, useEffect, useRef } from "react";
+import Webcam from "react-webcam";
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import * as faceapi from "face-api.js";
 
-import React, { useState } from "react";
+import questions from './questions';
 
-const questions = [
-  {
-    question: "Do you often feel sad or depressed?",
-    description: "This question aims to understand your general emotional state over a period of time.",
-    answers: [
-      "Yes, a little",
-      "Yes, noticeably",
-      "Yes, a lot",
-    ],
-  },
-  {
-    question: "Do you find it difficult to enjoy activities you used to enjoy?",
-    description: "This question helps assess changes in your interest or pleasure in activities.",
-    answers: [
-      "Yes, a little",
-      "Yes, noticeably",
-      "Yes, a lot",
-    ],
-  },
-  {
-    question: "Do you often feel tired or low in energy most days?",
-    description: "This question looks at your energy levels and how fatigue might affect your daily life.",
-    answers: [
-      "Yes, a little",
-      "Yes, noticeably",
-      "Yes, a lot",
-    ],
-  },
-  {
-    question: "Do you have frequent thoughts about death or suicide?",
-    description: "This question is crucial in understanding the severity of your depressive symptoms.",
-    answers: [
-      "No, just occasional thoughts",
-      "Yes, sometimes",
-      "Yes, often",
-    ],
-  },
-  {
-    question: "Do you find it difficult to carry out simple daily tasks?",
-    description: "This question evaluates how your depression might be impacting your daily functionality.",
-    answers: [
-      "Yes, a little",
-      "Yes, noticeably",
-      "Yes, a lot",
-    ],
-  },
-];
 
 export default function DiagnosticStepper() {
   const [currentStep, setCurrentStep] = useState(0);
   const [responses, setResponses] = useState({});
+  const [isVideoActive, setIsVideoActive] = useState(false);
+  const webcamRef = useRef(null);
+
+  const { transcript, resetTranscript } = useSpeechRecognition();
+
+  useEffect(() => {
+    const loadModels = async () => {
+      await faceapi.nets.ssdMobilenetv1.loadFromUri('/models'); // تحميل نموذج SSD MobileNet V1
+      await faceapi.nets.faceExpressionNet.loadFromUri('/models');
+    };
+    loadModels();
+  }, []);
+
+  useEffect(() => {
+    if (isVideoActive && webcamRef.current) {
+      const intervalId = setInterval(async () => {
+        const video = webcamRef.current.video;
+        if (video) {
+          const detections = await faceapi.detectAllFaces(video, new faceapi.SsdMobilenetv1Options())
+            .withFaceExpressions();
+          if (detections && detections.length > 0) {
+            console.log(detections[0].expressions); // عرض تعابير الوجه المكتشفة في وحدة التحكم
+          }
+        }
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [isVideoActive]);
 
   const nextStep = () => {
     if (currentStep < questions.length - 1) {
@@ -68,11 +54,16 @@ export default function DiagnosticStepper() {
 
   const handleAnswerSelection = (answer) => {
     setResponses({ ...responses, [currentStep]: answer });
+    resetTranscript();  // Reset voice transcript for the next question
   };
 
   const toggleVideo = () => {
-    setResponses(!responses);
+    setIsVideoActive(!isVideoActive);
   };
+
+  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+    return <span>Your browser does not support speech recognition.</span>;
+  }
 
   return (
     <div className="flex flex-col w-full lg:w-[66vw] h-[80vh] mx-auto bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-6 rounded-lg shadow-lg">
@@ -116,19 +107,25 @@ export default function DiagnosticStepper() {
                   ))}
                 </ul>
 
-                <div className={`w-full mb-4 ${responses ? "" : "opacity-60"}`}>
-                  <div className="w-full h-48 sm:h-56 lg:h-64 bg-gray-300 rounded-lg flex items-center justify-center dark:bg-gray-700 transition-opacity duration-300 ease-in-out">
-                    <p className="text-gray-500 dark:text-gray-300">[Live video feed here]</p>
+                {isVideoActive && (
+                  <div className="w-full mb-4">
+                    <div className="w-full h-48 sm:h-56 lg:h-64 bg-gray-300 rounded-lg flex items-center justify-center dark:bg-gray-700 transition-opacity duration-300 ease-in-out">
+                      <Webcam
+                        ref={webcamRef}
+                        audio={false}
+                        className="rounded-lg"
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <button
                   onClick={toggleVideo}
                   className={`w-full lg:w-auto px-6 py-3 rounded-lg text-lg font-medium tracking-wide transition-all duration-300 ${
-                    responses ? "bg-red-500 text-white" : "bg-teal-500 text-white"
+                    isVideoActive ? "bg-red-500 text-white" : "bg-teal-500 text-white"
                   } flex items-center justify-center`}
                 >
-                  {responses ? (
+                  {isVideoActive ? (
                     <>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -167,6 +164,9 @@ export default function DiagnosticStepper() {
                     </>
                   )}
                 </button>
+
+                <p className="text-gray-500 dark:text-gray-300 mt-2">Detected Speech: {transcript}</p>
+
               </div>
               
               <div className="flex mt-4 gap-2">

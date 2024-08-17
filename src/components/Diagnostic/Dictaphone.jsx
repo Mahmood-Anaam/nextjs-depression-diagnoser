@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import 'regenerator-runtime/runtime'
 import SpeechRecognition, {
     useSpeechRecognition
-} from 'react-speech-recognition'
+} from 'react-speech-recognition';
 
 const Page = () => {
 
@@ -70,9 +70,7 @@ const Page = () => {
 
   if (speechRecognitionSupported === null) return null // return null on first render, can be a loading indicator
 
-  if (!speechRecognitionSupported) {
-    return <span>Browser does not support speech recognition.</span>
-  }
+ 
 
   return (
     <div>

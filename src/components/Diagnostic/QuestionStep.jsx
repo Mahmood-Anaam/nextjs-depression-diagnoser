@@ -23,7 +23,7 @@ const QuestionStep = ({
 
   // Define voice commands based on the answers
   const commands = answers.map((answer, index) => ({
-    command: answer.toLowerCase() + " *",
+    command: [answer.toLowerCase()],
     callback: () => {
       console.log(`Recognized command: ${answer}`);
       setCommandResults(`Recognized command: ${answer}`);

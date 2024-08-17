@@ -18,12 +18,6 @@ const menuData = [
     newTab: false,
   },
   {
-    id: 3,
-    title: "Support",
-    path: "/contact",
-    newTab: false,
-  },
-  {
     id: 4,
     title: "Pages",
     newTab: false,
