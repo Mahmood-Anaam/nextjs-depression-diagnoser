@@ -1,3 +1,5 @@
+// \src\app\layout.js
+
 import { Inter } from "next/font/google";
 import Header from "@/components/Header";
 import { cookies } from "next/headers";
@@ -7,6 +9,7 @@ import { Providers } from "./providers";
 import "react-toastify/dist/ReactToastify.css";
 import "@/styles/globals.css";
 import Footer from "@/components/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +38,7 @@ export default function RootLayout({ children }) {
           {children}
 
           <Footer/>
+          <ScrollToTop/>
         </Providers>
       </body>
     </html>
