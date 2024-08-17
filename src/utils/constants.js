@@ -1,6 +1,6 @@
 export const APP_NAME = "Depression Diagnoser";
 
-const PRODUCTION_DOMAIN = "https://nextjs-depression-diagnoser.vercel.app";
+const PRODUCTION_DOMAIN = "https://nextjs-depression-diagnoser-end.vercel.app";
 const DEVELOPMENT_DOMAIN = "http://localhost:3000";
 
 export const DOMAIN = process.env.NODE_ENV === 'production' 
