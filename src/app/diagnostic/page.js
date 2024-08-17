@@ -23,8 +23,8 @@ const DiagnosticPage = () => {
 
           <div className="flex flex-wrap items-center justify-center">
             
-            {/* <DiagnosticStepper /> */}
-            <Dictaphone/>
+            <DiagnosticStepper />
+            {/* <Dictaphone/> */}
           </div>
         </div>
       </section>

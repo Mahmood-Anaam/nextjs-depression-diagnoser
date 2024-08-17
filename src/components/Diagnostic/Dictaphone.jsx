@@ -11,7 +11,7 @@ const Page = () => {
   const [message, setMessage] = useState('None data')
   const commands = [
     {
-      command: 'Yes*',
+      command: 'Yes *',
       callback: (food) => setMessage(`Your order is for: ${food}`)
     },
     {

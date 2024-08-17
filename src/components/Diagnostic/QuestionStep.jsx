@@ -23,7 +23,7 @@ const QuestionStep = ({
 
   // Define voice commands based on the answers
   const commands = answers.map((answer, index) => ({
-    command: [answer.toLowerCase()],
+    command: answer.toLowerCase() + " *",
     callback: () => {
       console.log(`Recognized command: ${answer}`);
       setCommandResults(`Recognized command: ${answer}`);
@@ -36,13 +36,7 @@ const QuestionStep = ({
     resetTranscript,
   } = useSpeechRecognition({ commands });
 
-  useEffect(() => {
-    const loadModels = async () => {
-      await faceapi.nets.ssdMobilenetv1.loadFromUri('/models');
-      await faceapi.nets.faceExpressionNet.loadFromUri('/models');
-    };
-    loadModels();
-  }, []);
+ 
 
   useEffect(() => {
     let animationFrameId;
