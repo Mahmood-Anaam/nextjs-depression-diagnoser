@@ -37,8 +37,8 @@ export default function RootLayout({ children }) {
 
           {children}
 
-          <Footer/>
-          <ScrollToTop/>
+          {/* <Footer/> */}
+          {/* <ScrollToTop/> */}
         </Providers>
       </body>
     </html>
