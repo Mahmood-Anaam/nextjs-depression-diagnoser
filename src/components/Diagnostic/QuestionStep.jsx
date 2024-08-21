@@ -7,182 +7,195 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 
-const QuestionStep = ({
+export default function QuestionStep({
   question,
   description,
   answers,
-  onNextStep,
-  onAnswer,
-}) => {
-  const [videoActive, setVideoActive] = useState(false);
+  index = 0,
+}) {
+  const [currentStep, setCurrentStep] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  const [expressions, setExpressions] = useState({});
-  const [commandResults, setCommandResults] = useState(""); // Track recognized commands
+  const [videoActive, setVideoActive] = useState(false);
+  const [videoDims, setVideoDims] = useState({ width: 0, height: 0 });
 
-  // Define voice commands based on the answers
-  const commands = answers.map((answer, index) => ({
-    command: [answer.toLowerCase()],
-    callback: () => {
-      console.log(`Recognized command: ${answer}`);
-      setCommandResults(`Recognized command: ${answer}`);
-      handleAnswerSelection(index);
-    },
-  }));
+  function startVideo() {
 
-  const {
-    transcript,
-    resetTranscript,
-  } = useSpeechRecognition({ commands });
-
- 
-
-  useEffect(() => {
-    let animationFrameId;
-    if (videoActive) {
-      detectFace();
-      SpeechRecognition.startListening();
-    } else {
-      SpeechRecognition.stopListening();
-    }
-
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
-  }, [videoActive]);
-
-  const startVideo = () => {
     setVideoActive(true);
-    resetTranscript();
+
   };
 
-  const stopVideo = () => {
+  function stopVideo() {
+
     setVideoActive(false);
-    SpeechRecognition.stopListening();
-    resetTranscript();
-    clearCanvas();
   };
 
-  const clearCanvas = () => {
-    if (canvasRef.current) {
-      const context = canvasRef.current.getContext("2d");
-      context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    }
+
+  const handleUserMedia = (stream) => {
+    const track = stream.getVideoTracks()[0];
+    const settings = track.getSettings();
+    setVideoDims({ width: settings.width, height: settings.height });
   };
 
-  const detectFace = async () => {
-    if (webcamRef.current && webcamRef.current.video.readyState === 4) {
-      const video = webcamRef.current.video;
-      const detections = await faceapi
-        .detectSingleFace(video)
-        .withFaceExpressions();
 
-      if (detections) {
-        setExpressions(detections.expressions);
 
-        const canvas = canvasRef.current;
-        const displaySize = {
-          width: video.videoWidth,
-          height: video.videoHeight,
-        };
-
-        faceapi.matchDimensions(canvas, displaySize);
-
-        const resizedDetections = faceapi.resizeResults(
-          detections,
-          displaySize
-        );
-        const context = canvas.getContext("2d");
-        context.clearRect(0, 0, canvas.width, canvas.height);
-
-        faceapi.draw.drawDetections(canvas, resizedDetections);
-        faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-      }
-    }
-
-    if (videoActive) {
-      requestAnimationFrame(detectFace);
-    }
-  };
-
-  const handleAnswerSelection = (answerIndex) => {
-    setSelectedAnswer(answerIndex);
-    onAnswer(answerIndex, expressions);
-    stopVideo();
-    onNextStep();
-  };
-
-  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-    return <div>Your browser does not support speech recognition.</div>;
-  }
-
+  // UI
   return (
     <>
-      <div className="p-4 border-l border-b border-r border-gray-200 dark:border-gray-700 rounded-b-lg bg-gray-50 dark:bg-gray-800">
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          {description}
-        </p>
-        <ul className="space-y-2">
-          {answers.map((answer, i) => (
-            <li key={i}>
-              <div
-                className={`w-full text-left p-3 rounded-lg transition-colors duration-300 ${
-                  selectedAnswer === i
-                    ? "bg-teal-500 text-white"
-                    : "bg-gray-100 dark:bg-gray-700"
-                }`}
-              >
-                {answer}
+      {/* div one */}
+      <div
+        className={`cursor-pointer p-4 rounded-lg border ${
+          currentStep
+            ? "bg-teal-500 text-white"
+            : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+        }`}
+        onClick={() => {
+          setCurrentStep(!currentStep);
+        }}
+      >
+        {/* question */}
+        <div className="flex justify-between items-center">
+          <span>
+            {index}. {question}
+          </span>
+          <svg
+            className={`w-6 h-6 transform transition-transform duration-300 ${
+              currentStep ? "rotate-180" : ""
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </div>
+      </div>
+
+      {/* div tow */}
+
+      <div
+        className={`overflow-hidden transition-max-height duration-500 ease-in-out ${
+          currentStep ? "max-h-full" : "max-h-0"
+        }`}
+      >
+        {/* description */}
+        {currentStep && (
+          <div className="p-4 border-l border-b border-r border-gray-200 dark:border-gray-700 rounded-b-lg bg-gray-50 dark:bg-gray-800">
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              {description}
+            </p>
+
+            {/* answers */}
+            <ul className="space-y-2">
+              {answers.map((answer, i) => (
+                <li key={i}>
+                  <div
+                    onClick={() => {
+                      setSelectedAnswer(i);
+                    }}
+                    className={`w-full text-left p-3 rounded-lg transition-colors duration-300 ${
+                      selectedAnswer === i
+                        ? "bg-primary text-white"
+                        : "bg-gray-100 dark:bg-gray-700"
+                    }`}
+                  >
+                    {answer}
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            {/* Webcam */}
+            <div className="container mt-5 mx-auto flex flex-col ">
+            <div className="relative w-full">
+                <Webcam
+                  audio={false}
+                  ref={webcamRef}
+                  controls={true}
+                  screenshotFormat="image/jpeg"
+                  videoConstraints={{facingMode: "user"}}
+                  onUserMedia={handleUserMedia}
+                  className="opacity-60 w-full rounded mx-auto"
+                />
+                <canvas
+                  ref={canvasRef}
+                  className="absolute"
+                />
               </div>
-            </li>
-          ))}
-        </ul>
 
-        <div className={`mt-6 ${videoActive ? "" : "opacity-60"}`}>
-          <div className="relative w-full h-72 md:h-96 bg-gray-300 rounded-lg flex items-center justify-center dark:bg-gray-700">
-            <Webcam
-              audio={false}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              videoConstraints={{
-                width: 1280,
-                height: 720,
-                facingMode: "user",
-              }}
-              className="absolute top-0 left-0 w-full h-full object-cover"
-            />
-            <canvas
-              ref={canvasRef}
-              className="absolute top-0 left-0 w-full h-full"
-            />
+              <button
+                onClick={videoActive ? stopVideo : startVideo}
+                className={`mt-4 w-full lg:w-auto px-6 py-3 rounded-lg text-lg font-medium tracking-wide transition-all duration-300 ${
+                  videoActive
+                    ? "bg-red-500 text-white"
+                    : "bg-primary text-white"
+                } flex items-center justify-center`}
+              >
+                {videoActive ? (
+                  <>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                    Stop Answer
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.867v4.266a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 5.5H5a2.5 2.5 0 00-2.5 2.5v8a2.5 2.5 0 002.5 2.5h14a2.5 2.5 0 002.5-2.5v-8a2.5 2.5 0 00-2.5-2.5z"
+                      />
+                    </svg>
+                    Start Answer
+                  </>
+                )}
+              </button>
+            </div>
+
+            {/* Continue*/}
+            <div className="mt-5 flex justify-center">
+              <button
+                className="px-6 py-2 bg-teal-500 text-white rounded-lg"
+                // onClick={nextStep}
+                disabled={currentStep}
+              >
+                Continue
+              </button>
+            </div>
           </div>
-        </div>
-
-        <button
-          onClick={videoActive ? stopVideo : startVideo}
-          className={`mt-4 w-full lg:w-auto px-6 py-3 rounded-lg text-lg font-medium tracking-wide transition-all duration-300 ${
-            videoActive ? "bg-red-500 text-white" : "bg-teal-500 text-white"
-          } flex items-center justify-center`}
-        >
-          {videoActive ? "Stop Video" : "Start Video"}
-        </button>
-
-        <div className="mt-4">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            {transcript}
-          </p>
-        </div>
-        <div className="mt-2">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            {commandResults}
-          </p>
-        </div>
+        )}
       </div>
     </>
   );
-};
-
-export default QuestionStep;
+}
