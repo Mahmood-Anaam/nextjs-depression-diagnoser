@@ -2,6 +2,7 @@
 import "regenerator-runtime/runtime";
 import React, { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
+import { detectSingleFaceExpression } from "@/utils/faceApiUtils";
 import * as faceapi from "face-api.js";
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -11,36 +12,136 @@ export default function QuestionStep({
   question,
   description,
   answers,
-  index = 0,
+  index = null,
+  isCurrentStep=false,
+  onSelectedAnswer = null,
+  onExpression = null,
+  onContinue = null,
+  isFinsh = false,
+  onFinsh = null,
+  onOpen = null,
+  onClose=null
 }) {
-  const [currentStep, setCurrentStep] = useState(false);
+  const [currentStep, setCurrentStep] = useState(isCurrentStep);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const [videoActive, setVideoActive] = useState(false);
-  const [videoDims, setVideoDims] = useState({ width: 0, height: 0 });
+  const [expression, setExpression] = useState(null);
+  const intervalIdRef = useRef(null);
 
-  function startVideo() {
 
+
+
+  const handleStartAnswer = () => {
     setVideoActive(true);
-
   };
 
-  function stopVideo() {
-
+  const handleStopAnswer = () => {
     setVideoActive(false);
   };
 
+  const capture = async () => {
+    if (webcamRef.current && canvasRef.current && videoActive) {
+      const imageSrc = webcamRef.current.getScreenshot();
+      if (imageSrc) {
+        const detection = await detectSingleFaceExpression(imageSrc);
 
-  const handleUserMedia = (stream) => {
-    const track = stream.getVideoTracks()[0];
-    const settings = track.getSettings();
-    setVideoDims({ width: settings.width, height: settings.height });
+        if (detection) {
+          const displaySize = {
+            width: webcamRef.current.video.videoWidth,
+            height: webcamRef.current.video.videoHeight,
+          };
+
+          const canvas = canvasRef.current;
+          faceapi.matchDimensions(canvas, displaySize);
+          const resizedDetection = faceapi.resizeResults(
+            detection,
+            displaySize
+          );
+          const context = canvas.getContext("2d");
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          faceapi.draw.drawDetections(canvas, resizedDetection);
+          faceapi.draw.drawFaceExpressions(canvas, resizedDetection);
+
+          const label = detection.expressions.asSortedArray()[0].expression;
+          if (label != expression) {
+            setExpression(label);
+            if (onExpression) {
+              onExpression(index,label);
+            }
+          }
+        }
+      }
+    }
   };
 
+  useEffect(() => {
+    if (videoActive && currentStep) {
+      intervalIdRef.current = setInterval(capture, 100);
+      SpeechRecognition.startListening({ continuous: true, language: "en-US" });
+    } else if (intervalIdRef.current) {
+      clearInterval(intervalIdRef.current);
+      SpeechRecognition.stopListening();
+      resetTranscript();
+    }
 
+    return () => clearInterval(intervalIdRef.current);
+  }, [videoActive, currentStep]);
+
+  const handleContinue = () => {
+    // handleClose();
+    setCurrentStep(false);
+    if (onContinue) {
+      onContinue(index);
+    }
+    
+  };
+
+  const handleSelectedAnswer = (indexAnswer) => {
+    setSelectedAnswer(indexAnswer);
+
+    if (onSelectedAnswer) {
+      onSelectedAnswer(index,indexAnswer);
+    }
+  };
+
+  const handleFinsh = () => {
+    setCurrentStep(!currentStep);
+    if (onFinsh) {
+      onFinsh(index);
+    }
+  };
+
+  const handleOpen = () => {
+    setCurrentStep(true);
+    if (onOpen) {
+      onOpen(index);
+    }
+
+  };
+
+  const handleClose = () => {
+    setCurrentStep(false);
+    if (onClose) {
+      onClose(index);
+    }
+
+  };
+
+  // Define voice commands based on the answers
+  const commands = answers.map((answer, index) => ({
+    command: [answer.toLowerCase()],
+    callback: (cmd) => {
+      console.log(`Recognized command: ${cmd}`);
+      handleSelectedAnswer(index);
+    },
+  }));
+
+  const { transcript, resetTranscript } = useSpeechRecognition({ commands });
 
   // UI
+
   return (
     <>
       {/* div one */}
@@ -51,9 +152,10 @@ export default function QuestionStep({
             : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
         }`}
         onClick={() => {
-          setCurrentStep(!currentStep);
+          currentStep?handleClose():handleOpen();
         }}
       >
+        <div>Transcript: {transcript}</div>
         {/* question */}
         <div className="flex justify-between items-center">
           <span>
@@ -98,7 +200,7 @@ export default function QuestionStep({
                 <li key={i}>
                   <div
                     onClick={() => {
-                      setSelectedAnswer(i);
+                      handleSelectedAnswer(i);
                     }}
                     className={`w-full text-left p-3 rounded-lg transition-colors duration-300 ${
                       selectedAnswer === i
@@ -114,24 +216,24 @@ export default function QuestionStep({
 
             {/* Webcam */}
             <div className="container mt-5 mx-auto flex flex-col ">
-            <div className="relative w-full">
+              <div className="relative w-full">
                 <Webcam
                   audio={false}
                   ref={webcamRef}
-                  controls={true}
                   screenshotFormat="image/jpeg"
-                  videoConstraints={{facingMode: "user"}}
-                  onUserMedia={handleUserMedia}
+                  videoConstraints={{ facingMode: "user" }}
                   className="opacity-60 w-full rounded mx-auto"
                 />
                 <canvas
                   ref={canvasRef}
-                  className="absolute"
+                  className={`absolute w-full rounded mx-auto top-0 left-0 ${
+                    videoActive ? "" : "hidden"
+                  } `}
                 />
               </div>
 
               <button
-                onClick={videoActive ? stopVideo : startVideo}
+                onClick={videoActive ? handleStopAnswer : handleStartAnswer}
                 className={`mt-4 w-full lg:w-auto px-6 py-3 rounded-lg text-lg font-medium tracking-wide transition-all duration-300 ${
                   videoActive
                     ? "bg-red-500 text-white"
@@ -183,14 +285,13 @@ export default function QuestionStep({
               </button>
             </div>
 
-            {/* Continue*/}
+            {/* Continue/Finsh*/}
             <div className="mt-5 flex justify-center">
               <button
                 className="px-6 py-2 bg-teal-500 text-white rounded-lg"
-                // onClick={nextStep}
-                disabled={currentStep}
+                onClick={isFinsh ? handleFinsh : handleContinue}
               >
-                Continue
+                {isFinsh ? "Finsh" : "Continue"}
               </button>
             </div>
           </div>
