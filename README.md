@@ -1,4 +1,5 @@
 # Depression Diagnoser
+[![Vercel](https://vercelbadge.vercel.app/api/Mahmood-Anaam/nextjs-depression-diagnoser)](https://nextjs-depression-diagnose.vercel.app/)
 
 Depression Diagnoser is an advanced web application designed to assess and diagnose the levels of depression in users. By analyzing user responses and facial expressions, the app provides a personalized evaluation of the user's mental health and offers options for seeking professional help.
 
@@ -11,16 +12,9 @@ Depression Diagnoser is an advanced web application designed to assess and diagn
 - **Dynamic Results**: Based on user inputs and expressions, the app calculates and displays the depression level.
 - **Consultation Booking**: Users can book consultations with mental health professionals directly through the app.
 
-## Screenshots
-
-- **Home Page**: ![Home Page](link_to_screenshot1)
-- **Questionnaire**: ![Questionnaire](link_to_screenshot2)
-- **Facial Expression Analysis**: ![Facial Expression Analysis](link_to_screenshot3)
-- **Consultation Booking**: ![Consultation Booking](link_to_screenshot4)
-
 ## Demo
 
-Try the live version of the app here: [Next.js Depression Diagnoser](https://nextjs-depression-diagnoser.vercel.app)
+Try the live version of the app here: [Depression Diagnoser](https://nextjs-depression-diagnose.vercel.app/)
 
 ## Getting Started
 
@@ -58,6 +52,17 @@ SMTP_USER=your_smtp_user
 SMTP_PASS=your_smtp_pass
 ```
 
+### Environment Variables
+
+- `DATABASE_URL`: Connection string for the PostgreSQL database.
+- `JWT_SECRET`: Secret key for JWT authentication.
+- `NODE_ENV`: Defines the environment (development or production).
+- `SMTP_HOST`: Hostname of the SMTP server for sending emails.
+- `SMTP_PORT`: Port used by the SMTP server.
+- `SMTP_USER`: Username for SMTP authentication.
+- `SMTP_PASS`: Password for SMTP authentication.
+
+
 ### Running the App
 
 Start the development server:
@@ -77,17 +82,4 @@ The app will be running on `http://localhost:3000`.
 - **React Speech Recognition**: A library for integrating speech recognition into React apps.
 - **Nodemailer**: A Node.js module for sending emails.
 
-## Environment Variables
-
-- `DATABASE_URL`: Connection string for the PostgreSQL database.
-- `JWT_SECRET`: Secret key for JWT authentication.
-- `NODE_ENV`: Defines the environment (development or production).
-- `SMTP_HOST`: Hostname of the SMTP server for sending emails.
-- `SMTP_PORT`: Port used by the SMTP server.
-- `SMTP_USER`: Username for SMTP authentication.
-- `SMTP_PASS`: Password for SMTP authentication.
-
-## License
-
-This project is licensed under the MIT License.
 
