@@ -1,5 +1,3 @@
-// \src\app\layout.js
-
 import { Inter } from "next/font/google";
 import Header from "@/components/Header";
 import { cookies } from "next/headers";
@@ -11,6 +9,11 @@ import "@/styles/globals.css";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 
+export const metadata = {
+  title: "DDiagnoser",
+  description:
+    "Depression Diagnoser is a cutting-edge application that combines advanced AI technology with medical expertise to provide accurate and personalized depression assessments.",
+};
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
@@ -23,7 +26,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <Header payload={payload} />
           <ToastContainer
-            position='top-center' 
+            position="top-center"
             autoClose={1000}
             hideProgressBar={false}
             newestOnTop={false}
@@ -32,13 +35,13 @@ export default function RootLayout({ children }) {
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            theme='colored'
+            theme="colored"
           />
 
           {children}
 
-          <Footer/>
-          <ScrollToTop/>
+          <Footer />
+          <ScrollToTop />
         </Providers>
       </body>
     </html>

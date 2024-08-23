@@ -23,48 +23,35 @@ const AboutSectionOne = () => {
         <div className="border-b border-body-color/[.15] pb-16 dark:border-white/[.15] md:pb-20 lg:pb-28">
           <div className="-mx-4 flex flex-wrap items-center">
             <div className="w-full px-4 lg:w-1/2">
-              <SectionTitle
-                title="Crafted for Startup, SaaS and Business Sites."
-                paragraph="The main ‘thrust’ is to focus on educating attendees on how to best protect highly vulnerable business applications with interactive panel discussions and roundtables."
+            <SectionTitle
+                title=" Our Mission"
+                paragraph="Our goal is to offer a comprehensive, user-friendly platform that
+                helps users understand their mental health status, identify
+                potential issues, and find the right support. We are committed to
+                using technology to break down barriers to mental health care,
+                making it more accessible for everyone."
                 mb="44px"
               />
 
               <div
-                className="mb-12 max-w-[570px] lg:mb-0"
+                className="mb-12 w-full lg:mb-0"
                 data-wow-delay=".15s"
               >
                 <div className="mx-[-12px] flex flex-wrap">
-                  <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-                    <List text="Premium quality" />
-                    <List text="Tailwind CSS" />
-                    <List text="Use for lifetime" />
+                  <div className="w-full px-3">
+                    <List text="Confidential and secure assessments" />
+                    <List text="Personalized feedback based on AI technology" />
+                    <List text="Access to expert consultations" />
+                    <List text="Supportive resources available 24/7" />
+                   
                   </div>
 
-                  <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-                    <List text="Next.js" />
-                    <List text="Rich documentation" />
-                    <List text="Developer friendly" />
-                  </div>
+                 
                 </div>
               </div>
             </div>
 
-            <div className="w-full px-4 lg:w-1/2">
-              <div className="relative mx-auto aspect-[25/24] max-w-[500px] lg:mr-0">
-                <Image
-                  src="/images/about/about-image.svg"
-                  alt="about-image"
-                  fill
-                  className="mx-auto max-w-full drop-shadow-three dark:hidden dark:drop-shadow-none lg:mr-0"
-                />
-                <Image
-                  src="/images/about/about-image-dark.svg"
-                  alt="about-image"
-                  fill
-                  className="mx-auto hidden max-w-full drop-shadow-three dark:block dark:drop-shadow-none lg:mr-0"
-                />
-              </div>
-            </div>
+
           </div>
         </div>
       </div>

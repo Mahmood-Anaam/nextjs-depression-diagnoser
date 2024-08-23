@@ -50,7 +50,7 @@ const Header = ({ payload = null }) => {
       >
         <div className="container">
           <div className="relative -mx-4 flex items-center justify-between">
-            <div className="w-60 max-w-full px-4 xl:mr-12">
+            <div className="w-60 max-w-full  px-4 xl:mr-12">
               <Link
                 href="/"
                 className={`header-logo block w-full ${
@@ -58,18 +58,11 @@ const Header = ({ payload = null }) => {
                 } `}
               >
                 <Image
-                  src="/images/logo/logo-2.svg"
-                  alt="logo"
-                  width={140}
-                  height={30}
-                  className="w-full dark:hidden"
-                />
-                <Image
                   src="/images/logo/logo.svg"
                   alt="logo"
                   width={140}
                   height={30}
-                  className="hidden w-full dark:block"
+                  className="w-full"
                 />
               </Link>
             </div>
@@ -113,7 +106,7 @@ const Header = ({ payload = null }) => {
                             href={menuItem.path}
                             className={`flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${
                               usePathName === menuItem.path
-                                ? "text-primary dark:text-white"
+                                ? "text-blue-700 dark:text-white"
                                 : "text-dark hover:text-primary dark:text-white/70 dark:hover:text-white"
                             }`}
                           >

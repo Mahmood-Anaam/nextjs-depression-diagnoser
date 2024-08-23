@@ -1,14 +1,44 @@
+"use client";
 import Link from "next/link";
-import {APP_NAME} from "@/utils/constants";
-
-
-export const metadata = {
-  title: "Sign Up Page | Depression-Diagnoser",
-  description: "This is Sign Up Page for Depression-Diagnoser",
-  // other metadata
-};
+import { APP_NAME } from "@/utils/constants";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { DOMAIN } from "@/utils/constants";
+import Spinner from "@/components/Spinner";
 
 const SignupPage = () => {
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  const role = "USER";
+
+
+  const formSubmitHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      await axios.post(`${DOMAIN}/api/users/signup`, {
+        email,
+        password,
+        username,
+        role,
+      });
+      router.replace("/signin");
+      setLoading(false);
+      router.refresh();
+    } catch (error) {
+      toast.error(error?.response?.data.message);
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
@@ -22,10 +52,8 @@ const SignupPage = () => {
                 <p className="mb-11 text-center text-base font-medium text-body-color">
                   It’s totally free and super easy
                 </p>
-               
 
-
-                <form>
+                <form onSubmit={formSubmitHandler}>
                   <div className="mb-8">
                     <label
                       htmlFor="name"
@@ -38,6 +66,9 @@ const SignupPage = () => {
                       type="text"
                       name="name"
                       placeholder="Enter your full name"
+                      required={true}
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                     />
                   </div>
@@ -53,6 +84,9 @@ const SignupPage = () => {
                       type="email"
                       name="email"
                       placeholder="Enter your Email"
+                      required={true}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                     />
                   </div>
@@ -68,6 +102,9 @@ const SignupPage = () => {
                       type="password"
                       name="password"
                       placeholder="Enter your Password"
+                      required={true}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                     />
                   </div>
@@ -81,6 +118,7 @@ const SignupPage = () => {
                           type="checkbox"
                           id="checkboxLabel"
                           className="sr-only"
+                          defaultChecked
                         />
                         <div className="box mr-4 mt-1 flex h-5 w-5 items-center justify-center rounded border border-body-color border-opacity-20 dark:border-white dark:border-opacity-10">
                           <span className="opacity-0">
@@ -103,12 +141,12 @@ const SignupPage = () => {
                       </div>
                       <span>
                         By creating account means you agree to the
-                        <a href="#0" className="text-primary hover:underline">
+                        <a href="#0" className="text-scondery hover:underline">
                           {" "}
                           Terms and Conditions{" "}
                         </a>
                         , and our
-                        <a href="#0" className="text-primary hover:underline">
+                        <a href="#0" className="text-scondery hover:underline">
                           {" "}
                           Privacy Policy{" "}
                         </a>
@@ -116,14 +154,18 @@ const SignupPage = () => {
                     </label>
                   </div>
                   <div className="mb-6">
-                    <button className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
-                      Sign up
+                    <button
+                      disabled={loading}
+                      type="submit"
+                      className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90"
+                    >
+                      {loading ? <Spinner /> : "Sign up"}
                     </button>
                   </div>
                 </form>
                 <p className="text-center text-base font-medium text-body-color">
                   Already using {`${APP_NAME}? `}
-                  <Link href="/signin" className="text-primary hover:underline">
+                  <Link href="/signin" className="text-scondery hover:underline">
                     Sign in
                   </Link>
                 </p>

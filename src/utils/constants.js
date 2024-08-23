@@ -1,4 +1,4 @@
-export const APP_NAME = "Depression Diagnoser";
+export const APP_NAME = "DDiagnoser";
 
 const PRODUCTION_DOMAIN = "https://nextjs-depression-diagnoser-end.vercel.app";
 const DEVELOPMENT_DOMAIN = "http://localhost:3000";

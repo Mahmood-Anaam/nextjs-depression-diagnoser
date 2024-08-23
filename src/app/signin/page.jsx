@@ -24,7 +24,6 @@ const SigninPage = () => {
       router.replace("/");
       setLoading(false);
       router.refresh();
-      
     } catch (error) {
       toast.error(error?.response?.data.message);
       console.log(error);
@@ -34,7 +33,7 @@ const SigninPage = () => {
 
   return (
     <>
-       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
+      <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
@@ -119,7 +118,7 @@ const SigninPage = () => {
                     <div>
                       <Link
                         href="/forgot"
-                        className="text-sm font-medium text-primary hover:underline"
+                        className="text-sm font-medium text-scondery hover:underline"
                       >
                         Forgot Password?
                       </Link>
@@ -137,7 +136,10 @@ const SigninPage = () => {
                 </form>
                 <p className="text-center text-base font-medium text-body-color">
                   Don’t you have an account?{" "}
-                  <Link href="/signup" className="text-primary hover:underline">
+                  <Link
+                    href="/signup"
+                    className="text-scondery hover:underline"
+                  >
                     Sign up
                   </Link>
                 </p>

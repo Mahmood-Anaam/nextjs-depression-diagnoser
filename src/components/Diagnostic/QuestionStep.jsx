@@ -13,25 +13,21 @@ export default function QuestionStep({
   description,
   answers,
   index = null,
-  isCurrentStep=false,
+  isCurrentStep = false,
   onSelectedAnswer = null,
   onExpression = null,
   onContinue = null,
   isFinsh = false,
   onFinsh = null,
   onOpen = null,
-  onClose=null
+  onClose = null,
 }) {
-  const [currentStep, setCurrentStep] = useState(isCurrentStep);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const [videoActive, setVideoActive] = useState(false);
   const [expression, setExpression] = useState(null);
   const intervalIdRef = useRef(null);
-
-
-
 
   const handleStartAnswer = () => {
     setVideoActive(true);
@@ -68,7 +64,7 @@ export default function QuestionStep({
           if (label != expression) {
             setExpression(label);
             if (onExpression) {
-              onExpression(index,label);
+              onExpression(index, label);
             }
           }
         }
@@ -77,7 +73,7 @@ export default function QuestionStep({
   };
 
   useEffect(() => {
-    if (videoActive && currentStep) {
+    if (videoActive && isCurrentStep) {
       intervalIdRef.current = setInterval(capture, 100);
       SpeechRecognition.startListening({ continuous: true, language: "en-US" });
     } else if (intervalIdRef.current) {
@@ -87,46 +83,37 @@ export default function QuestionStep({
     }
 
     return () => clearInterval(intervalIdRef.current);
-  }, [videoActive, currentStep]);
+  }, [videoActive, isCurrentStep]);
 
   const handleContinue = () => {
-    // handleClose();
-    setCurrentStep(false);
     if (onContinue) {
       onContinue(index);
     }
-    
   };
 
   const handleSelectedAnswer = (indexAnswer) => {
     setSelectedAnswer(indexAnswer);
-
     if (onSelectedAnswer) {
-      onSelectedAnswer(index,indexAnswer);
+      onSelectedAnswer(index, indexAnswer);
     }
   };
 
   const handleFinsh = () => {
-    setCurrentStep(!currentStep);
     if (onFinsh) {
       onFinsh(index);
     }
   };
 
   const handleOpen = () => {
-    setCurrentStep(true);
     if (onOpen) {
       onOpen(index);
     }
-
   };
 
   const handleClose = () => {
-    setCurrentStep(false);
     if (onClose) {
       onClose(index);
     }
-
   };
 
   // Define voice commands based on the answers
@@ -147,12 +134,12 @@ export default function QuestionStep({
       {/* div one */}
       <div
         className={`cursor-pointer p-4 rounded-lg border ${
-          currentStep
-            ? "bg-teal-500 text-white"
+          isCurrentStep
+            ? "bg-blue-950 text-white"
             : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
         }`}
         onClick={() => {
-          currentStep?handleClose():handleOpen();
+          isCurrentStep ? handleClose() : handleOpen();
         }}
       >
         <div>Transcript: {transcript}</div>
@@ -163,7 +150,7 @@ export default function QuestionStep({
           </span>
           <svg
             className={`w-6 h-6 transform transition-transform duration-300 ${
-              currentStep ? "rotate-180" : ""
+              isCurrentStep ? "rotate-180" : ""
             }`}
             fill="none"
             stroke="currentColor"
@@ -184,11 +171,11 @@ export default function QuestionStep({
 
       <div
         className={`overflow-hidden transition-max-height duration-500 ease-in-out ${
-          currentStep ? "max-h-full" : "max-h-0"
+          isCurrentStep ? "max-h-full" : "max-h-0"
         }`}
       >
         {/* description */}
-        {currentStep && (
+        {isCurrentStep && (
           <div className="p-4 border-l border-b border-r border-gray-200 dark:border-gray-700 rounded-b-lg bg-gray-50 dark:bg-gray-800">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
               {description}
@@ -204,7 +191,7 @@ export default function QuestionStep({
                     }}
                     className={`w-full text-left p-3 rounded-lg transition-colors duration-300 ${
                       selectedAnswer === i
-                        ? "bg-primary text-white"
+                        ? "bg-teal-500 text-white"
                         : "bg-gray-100 dark:bg-gray-700"
                     }`}
                   >
@@ -288,7 +275,7 @@ export default function QuestionStep({
             {/* Continue/Finsh*/}
             <div className="mt-5 flex justify-center">
               <button
-                className="px-6 py-2 bg-teal-500 text-white rounded-lg"
+                className="px-6 py-2 bg-primary text-white rounded-lg  hover:bg-blue-900 transition"
                 onClick={isFinsh ? handleFinsh : handleContinue}
               >
                 {isFinsh ? "Finsh" : "Continue"}

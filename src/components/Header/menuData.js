@@ -7,36 +7,46 @@ const menuData = [
   },
   {
     id: 2,
-    title: "About",
-    path: "/about",
-    newTab: false,
-  },
-  {
-    id: 33,
     title: "Diagnostic",
     path: "/diagnostic",
     newTab: false,
   },
+
+  {
+    id: 3,
+    title: "Consultation Booking",
+    path: "/booking",
+    newTab: false,
+  },
+
   {
     id: 4,
-    title: "Pages",
+    title: "About Us",
+    path: "/about",
     newTab: false,
-    submenu: [
-  
-      {
-        id: 46,
-        title: "Sign In",
-        path: "/signin",
-        newTab: false,
-      },
-      {
-        id: 47,
-        title: "Sign Up",
-        path: "/signup",
-        newTab: false,
-      },
-    
-    ],
   },
+
+
+  // {
+  //   id: 5,
+  //   title: "Pages",
+  //   newTab: false,
+  //   submenu: [
+  
+  //     {
+  //       id: 46,
+  //       title: "Sign In",
+  //       path: "/signin",
+  //       newTab: false,
+  //     },
+  //     {
+  //       id: 47,
+  //       title: "Sign Up",
+  //       path: "/signup",
+  //       newTab: false,
+  //     },
+    
+  //   ],
+  // },
 ];
 export default menuData;

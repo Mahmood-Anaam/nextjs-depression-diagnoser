@@ -3,7 +3,7 @@ const questions = [
       question: "Do you often feel sad or depressed?",
       description: "This question aims to understand your general emotional state over a period of time.",
       answers: [
-        "Yes",
+        "Yes, a little",
         "Yes, noticeably",
         "Yes, a lot",
       ],

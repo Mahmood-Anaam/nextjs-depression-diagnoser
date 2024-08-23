@@ -12,23 +12,15 @@ const Footer = () => {
               <div className="mb-12 max-w-[360px] lg:mb-16">
                 <Link href="/" className="mb-8 inline-block">
                   <Image
-                    src="/images/logo/logo-2.svg"
-                    alt="logo"
-                    className="w-full dark:hidden"
-                    width={140}
-                    height={30}
-                  />
-                  <Image
                     src="/images/logo/logo.svg"
                     alt="logo"
-                    className="hidden w-full dark:block"
+                    className="w-full"
                     width={140}
                     height={30}
                   />
                 </Link>
                 <p className="mb-9 text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Integer lobortis.
+                Empowering you to understand and manage your mental health with advanced AI-driven assessments and professional consultations.
                 </p>
                 <div className="flex items-center">
                   <a
@@ -117,7 +109,7 @@ const Footer = () => {
                 <ul>
                   <li>
                     <Link
-                      href="/blog"
+                      href="/"
                       className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
                       Blog
@@ -185,7 +177,7 @@ const Footer = () => {
                 <ul>
                   <li>
                     <Link
-                      href="/contact"
+                      href="/"
                       className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
                       Open Support Ticket
@@ -215,27 +207,12 @@ const Footer = () => {
           <div className="h-px w-full bg-gradient-to-r from-transparent via-[#D2D8E183] to-transparent dark:via-[#959CB183]"></div>
           <div className="py-8">
             <p className="text-center text-base text-body-color dark:text-white">
-              Template by{" "}
-              <a
-                href="http://uideck.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary"
-              >
-                UIdeck
-              </a>{" "}
-              and{" "}
-              <a
-                href="https://nextjstemplates.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary"
-              >
-                Next.js Templates
-              </a>
+            © 2024 DDiagnoser. All rights reserved. Crafted with care by <a href="#"> R </a>.
             </p>
           </div>
         </div>
+
+        
         <div className="absolute right-0 top-14 z-[-1]">
           <svg
             width="55"
