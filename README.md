@@ -14,7 +14,7 @@ Depression Diagnoser is an advanced web application designed to assess and diagn
 
 ## Demo
 
-Try the live version of the app here: [Depression Diagnoser](https://nextjs-depression-diagnose.vercel.app/)
+Try the live version of the app here: [Depression Diagnoser](https://nextjs-depression-diagnoser.vercel.app/)
 
 ## Getting Started
 
