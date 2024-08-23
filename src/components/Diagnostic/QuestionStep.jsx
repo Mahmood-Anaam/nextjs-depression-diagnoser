@@ -152,7 +152,7 @@ export default function QuestionStep({
           isCurrentStep ? handleClose() : handleOpen();
         }}
       >
-        <div>Transcript: {transcript}</div>
+   
         {/* question */}
         <div className="flex justify-between items-center">
           <span>
