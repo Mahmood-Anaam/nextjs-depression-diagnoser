@@ -38,8 +38,10 @@ export default function QuestionStep({
   const commands = answers.map((answer, index) => ({
     command: [answer.toLowerCase()],
     callback: (cmd) => {
+      if (isCurrentStep) {
       console.log(`Recognized command: ${cmd}`);
       handleSelectedAnswer(index);
+      }
     },
   }));
 
