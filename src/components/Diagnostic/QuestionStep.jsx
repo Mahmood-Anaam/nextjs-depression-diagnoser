@@ -29,6 +29,23 @@ export default function QuestionStep({
   const [expression, setExpression] = useState(null);
   const intervalIdRef = useRef(null);
 
+
+
+
+
+
+  // Define voice commands based on the answers
+  const commands = answers.map((answer, index) => ({
+    command: [answer.toLowerCase()],
+    callback: (cmd) => {
+      console.log(`Recognized command: ${cmd}`);
+      handleSelectedAnswer(index);
+    },
+  }));
+
+  const { transcript, resetTranscript } = useSpeechRecognition({ commands });
+
+
   const handleStartAnswer = () => {
     setVideoActive(true);
   };
@@ -86,6 +103,7 @@ export default function QuestionStep({
   }, [videoActive, isCurrentStep]);
 
   const handleContinue = () => {
+    resetTranscript();
     if (onContinue) {
       onContinue(index);
     }
@@ -105,27 +123,19 @@ export default function QuestionStep({
   };
 
   const handleOpen = () => {
+    resetTranscript();
     if (onOpen) {
       onOpen(index);
     }
   };
 
   const handleClose = () => {
+    resetTranscript();
     if (onClose) {
       onClose(index);
     }
   };
 
-  // Define voice commands based on the answers
-  const commands = answers.map((answer, index) => ({
-    command: [answer.toLowerCase()],
-    callback: (cmd) => {
-      console.log(`Recognized command: ${cmd}`);
-      handleSelectedAnswer(index);
-    },
-  }));
-
-  const { transcript, resetTranscript } = useSpeechRecognition({ commands });
 
   // UI
 
