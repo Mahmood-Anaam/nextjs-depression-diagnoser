@@ -27,7 +27,7 @@ export default function DiagnosticStepper() {
       if (answer.answer === "Rarely") totalScore += 1;
       if (answer.answer === "Sometimes") totalScore += 2;
       if (answer.answer === "Often") totalScore += 3;
-    
+
       // Add points based on the user's expressions
       if (answer.expression === "neutral") totalScore += 1;
       if (answer.expression === "happy") totalScore += 0;
@@ -37,7 +37,6 @@ export default function DiagnosticStepper() {
       if (answer.expression === "fearful") totalScore += 3;
       if (answer.expression === "surprised") totalScore += 1;
     });
-    
 
     let diagnosis = "";
     let message = "";
