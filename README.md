@@ -1,7 +1,5 @@
 # Depression Diagnoser
 
-[![Vercel](https://vercelbadge.vercel.app/api/Mahmood-Anaam/nextjs-depression-diagnoser)](https://nextjs-depression-diagnoser.vercel.app)
-
 Depression Diagnoser is an advanced web application designed to assess and diagnose the levels of depression in users. By analyzing user responses and facial expressions, the app provides a personalized evaluation of the user's mental health and offers options for seeking professional help.
 
 ## Features
@@ -93,4 +91,3 @@ The app will be running on `http://localhost:3000`.
 
 This project is licensed under the MIT License.
 
----
