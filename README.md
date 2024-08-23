@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Depression Diagnoser
+
+[![Vercel](https://vercelbadge.vercel.app/api/Mahmood-Anaam/nextjs-depression-diagnoser)](https://nextjs-depression-diagnoser.vercel.app)
+
+Depression Diagnoser is an advanced web application designed to assess and diagnose the levels of depression in users. By analyzing user responses and facial expressions, the app provides a personalized evaluation of the user's mental health and offers options for seeking professional help.
+
+## Features
+
+- **User Authentication**: Secure sign-up, sign-in, and password recovery functionality to protect user accounts.
+- **Interactive Questionnaire**: Users answer a series of questions designed to evaluate their mental state.
+- **Facial Expression Analysis**: Uses face-api.js to detect and analyze facial expressions during the questionnaire.
+- **Real-time Speech Recognition**: Users can answer questions using voice commands, with responses recognized and processed instantly.
+- **Dynamic Results**: Based on user inputs and expressions, the app calculates and displays the depression level.
+- **Consultation Booking**: Users can book consultations with mental health professionals directly through the app.
+
+## Screenshots
+
+- **Home Page**: ![Home Page](link_to_screenshot1)
+- **Questionnaire**: ![Questionnaire](link_to_screenshot2)
+- **Facial Expression Analysis**: ![Facial Expression Analysis](link_to_screenshot3)
+- **Consultation Booking**: ![Consultation Booking](link_to_screenshot4)
+
+## Demo
+
+Try the live version of the app here: [Next.js Depression Diagnoser](https://nextjs-depression-diagnoser.vercel.app)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js and npm installed
+- PostgreSQL database
+
+### Installation
+
+1. **Clone the repository**:
+
+```bash
+git clone https://github.com/Mahmood-Anaam/nextjs-depression-diagnoser.git
+cd nextjs-depression-diagnoser
+```
+
+2. **Install dependencies**:
+
+```bash
+npm install
+```
+
+3. **Set up environment variables**:
+
+Create a `.env` file in the root directory and add the following environment variables:
+
+```bash
+DATABASE_URL=your_database_url
+JWT_SECRET=your_jwt_secret
+NODE_ENV=development
+SMTP_HOST=your_smtp_host
+SMTP_PORT=your_smtp_port
+SMTP_USER=your_smtp_user
+SMTP_PASS=your_smtp_pass
+```
+
+### Running the App
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app will be running on `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Next.js**: A React framework for server-side rendering and static site generation.
+- **Tailwind CSS**: A utility-first CSS framework for styling.
+- **Prisma**: A modern ORM for database interaction in Node.js.
+- **Face-api.js**: A library for face detection and facial expression recognition.
+- **React Speech Recognition**: A library for integrating speech recognition into React apps.
+- **Nodemailer**: A Node.js module for sending emails.
 
-## Learn More
+## Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+- `DATABASE_URL`: Connection string for the PostgreSQL database.
+- `JWT_SECRET`: Secret key for JWT authentication.
+- `NODE_ENV`: Defines the environment (development or production).
+- `SMTP_HOST`: Hostname of the SMTP server for sending emails.
+- `SMTP_PORT`: Port used by the SMTP server.
+- `SMTP_USER`: Username for SMTP authentication.
+- `SMTP_PASS`: Password for SMTP authentication.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+This project is licensed under the MIT License.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
