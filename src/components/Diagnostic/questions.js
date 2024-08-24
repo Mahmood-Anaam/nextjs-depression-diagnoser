@@ -3,7 +3,7 @@ const questions = [
     question: "Do you often feel sad or depressed?",
     description: "This question aims to understand your general emotional state over a period of time.",
     answers: [
-      "not Often",
+      "Rarely",
       "Sometimes",
       "Often",
     ],
@@ -12,7 +12,7 @@ const questions = [
     question: "Do you find it difficult to enjoy activities you used to enjoy?",
     description: "This question helps assess changes in your interest or pleasure in activities.",
     answers: [
-      "not Often",
+      "Rarely",
       "Sometimes",
       "Often",
     ],
