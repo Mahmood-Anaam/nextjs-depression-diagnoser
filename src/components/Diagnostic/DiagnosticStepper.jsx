@@ -24,6 +24,11 @@ export default function DiagnosticStepper() {
 
     userAnswers.forEach((answer) => {
       // Add points based on the user's answers
+      if (answer.answer === "No") {
+        totalScore = 0;
+        
+      }
+      else{
       if (answer.answer === "Rarely") totalScore += 1;
       if (answer.answer === "Sometimes") totalScore += 2;
       if (answer.answer === "Often") totalScore += 3;
@@ -36,6 +41,7 @@ export default function DiagnosticStepper() {
       if (answer.expression === "disgusted") totalScore += 2;
       if (answer.expression === "fearful") totalScore += 3;
       if (answer.expression === "surprised") totalScore += 1;
+      }
     });
 
     let diagnosis = "";
